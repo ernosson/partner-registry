@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/partnerregistry
+    url: jdbc:postgresql://localhost:5432/partnerregistry
     driverClassName: org.postgresql.Driver
     username: postgres
     password: admin1234
@@ -8,6 +8,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  h2:
-    console:
-      enabled: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
