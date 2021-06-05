@@ -36,7 +36,7 @@ public class Address {
     private String houseNumber;
 
     @ManyToOne
-    @JoinColumn( name = "partnerId", nullable = false )
+    @JoinColumn( name = "partnerId" )
     private Partner partner;
 
 }

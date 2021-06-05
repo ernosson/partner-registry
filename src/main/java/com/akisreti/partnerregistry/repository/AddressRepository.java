@@ -1,6 +1,6 @@
 package com.akisreti.partnerregistry.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.akisreti.partnerregistry.domain.Address;
 
@@ -9,5 +9,5 @@ import com.akisreti.partnerregistry.domain.Address;
  *
  * @author kisretia
  */
-public interface AddressRepository extends CrudRepository<Address, Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 }
