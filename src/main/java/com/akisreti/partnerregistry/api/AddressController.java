@@ -2,13 +2,12 @@ package com.akisreti.partnerregistry.api;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.akisreti.partnerregistry.dto.AddressDto;
@@ -27,8 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping( "/address" )
 public class AddressController {
 
-    @Autowired
-    AddressService addressService;
+    private AddressService addressService;
+
+    public AddressController( AddressService addressService ) {
+        this.addressService = addressService;
+    }
 
     @ApiOperation( "Get address list" )
     @GetMapping( "/list" )
@@ -37,9 +39,9 @@ public class AddressController {
     }
 
     @ApiOperation( "Get address by id" )
-    @GetMapping( "/detail" )
+    @GetMapping( "/detail/{addressId}" )
     public AddressDto getAddress(
-        @RequestParam
+        @PathVariable
         final Long addressId ) {
         return addressService.getAddress(addressId);
     }
@@ -53,9 +55,9 @@ public class AddressController {
     }
 
     @ApiOperation( "Delete address" )
-    @DeleteMapping( "/delete" )
+    @DeleteMapping( "/delete/{addressId}" )
     public void deleteAddress(
-        @RequestParam
+        @PathVariable
         final Long addressId ) {
         addressService.deleteAddress(addressId);
     }

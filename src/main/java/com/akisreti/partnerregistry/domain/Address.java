@@ -7,10 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Address.
@@ -18,9 +15,6 @@ import lombok.NoArgsConstructor;
  * @author kisretia
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder( toBuilder = true )
 @Entity
 public class Address {
 

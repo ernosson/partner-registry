@@ -3,7 +3,6 @@ package com.akisreti.partnerregistry.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.akisreti.partnerregistry.domain.Address;
@@ -20,8 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-    @Autowired
-    AddressRepository addressRepository;
+    private AddressRepository addressRepository;
+
+    public AddressServiceImpl( AddressRepository addressRepository ) {
+        this.addressRepository = addressRepository;
+    }
 
     @Override
     public AddressDto getAddress( Long addressId ) {

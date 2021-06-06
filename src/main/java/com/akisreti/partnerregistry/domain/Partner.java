@@ -9,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Partner.
@@ -17,6 +20,9 @@ import lombok.Data;
  * @author kisretia
  */
 @Data
+@Builder( toBuilder = true )
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Partner {
 

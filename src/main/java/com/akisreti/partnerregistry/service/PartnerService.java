@@ -2,6 +2,7 @@ package com.akisreti.partnerregistry.service;
 
 import java.util.List;
 
+import com.akisreti.partnerregistry.domain.Partner;
 import com.akisreti.partnerregistry.dto.PartnerDto;
 
 /**
@@ -16,6 +17,8 @@ public interface PartnerService {
     List<PartnerDto> getPartnerList();
 
     void savePartner( final PartnerDto partnerDto );
+
+    void savePartnerList( List<Partner> partners );
 
     void deletePartner( final Long partnerId );
 }

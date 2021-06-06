@@ -3,7 +3,6 @@ package com.akisreti.partnerregistry.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.akisreti.partnerregistry.domain.Partner;
@@ -20,8 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class PartnerServiceImpl implements PartnerService {
 
-    @Autowired
-    PartnerRepository partnerRepository;
+    private PartnerRepository partnerRepository;
+
+    public PartnerServiceImpl( PartnerRepository partnerRepository ) {
+        this.partnerRepository = partnerRepository;
+    }
 
     @Override
     public PartnerDto getPartner( Long partnerId ) {
@@ -39,6 +41,11 @@ public class PartnerServiceImpl implements PartnerService {
     public void savePartner( final PartnerDto partnerDto ) {
         ObjectMapper objectMapper = new ObjectMapper();
         partnerRepository.save(objectMapper.convertValue(partnerDto, Partner.class));
+    }
+
+    @Override
+    public void savePartnerList( final List<Partner> partners ) {
+        partnerRepository.saveAll(partners);
     }
 
     @Override
