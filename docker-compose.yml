@@ -1,11 +1,26 @@
 version: '2'
 
 services:
-  app:
-    image: 'partner-registry-postgres:latest'
+  frontend:
+    container_name: partner-registry-frontend
     build:
-      context: .
-    container_name: partner-registry
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        API_BASE_URL: http://127.0.0.1:8080/
+    ports:
+      - 8081:80
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - frontend
+      
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: partner-registry-backend
     depends_on:
     - db
     ports:
@@ -15,15 +30,23 @@ services:
     - spring.datasource.username=postgres
     - spring.datasource.password=admin1234
     - spring.jpa.hibernate.ddl-auto=update
+    networks:
+    - backend
+    - frontend
 
   db:
     image: 'postgres:13.1-alpine'
-    container_name: db
+    container_name: partner-registry-db
     ports:
     - 5432:5432
+    restart: always
     environment:
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=admin1234
     - POSTGRES_DB=partnerregistry
+    networks:
+    - backend  
 
-
+networks:
+  backend:
+  frontend:
