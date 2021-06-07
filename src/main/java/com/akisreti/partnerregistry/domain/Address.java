@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.Data;
 
 /**
@@ -14,6 +18,9 @@ import lombok.Data;
  *
  * @author kisretia
  */
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "addressId")
 @Data
 @Entity
 public class Address {
@@ -26,9 +33,10 @@ public class Address {
 
     @Column( length = 10 )
     private String zipCode;
-    private String address;
+    private String streetName;
     private String houseNumber;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn( name = "partnerId" )
     private Partner partner;

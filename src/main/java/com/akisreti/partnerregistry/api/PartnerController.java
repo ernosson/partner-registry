@@ -3,6 +3,7 @@ package com.akisreti.partnerregistry.api;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +17,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.akisreti.partnerregistry.domain.Partner;
 import com.akisreti.partnerregistry.dto.PartnerDto;
 import com.akisreti.partnerregistry.service.DocumentService;
 import com.akisreti.partnerregistry.service.PartnerService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
+import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 /**
  * AddressController.
@@ -43,11 +51,23 @@ public class PartnerController {
         this.documentService = documentService;
     }
 
-    @ApiOperation( "Get partner list" )
-    @GetMapping( "/list" )
-    public List<PartnerDto> getPartners() {
-        return partnerService.getPartnerList();
+    // @formatter:off
+    @ApiOperation( "Get filtered partner list" )
+    @GetMapping( "/filter" )
+    public List<PartnerDto> getPartnersFiltered(
+        @Join( path = "addresses", alias = "a" )
+        @And( {
+            @Spec( path = "name", spec = LikeIgnoreCase.class ),
+            @Spec( path = "type", spec = EqualIgnoreCase.class ),
+            @Spec( path = "a.country",     params = "country",     spec = EqualIgnoreCase.class ),
+            @Spec( path = "a.city",        params = "city",        spec = EqualIgnoreCase.class ),
+            @Spec( path = "a.zipCode",     params = "zipCode",     spec = Equal.class ),
+            @Spec( path = "a.streetName",  params = "streetName",  spec = LikeIgnoreCase.class ),
+            @Spec( path = "a.houseNumber", params = "houseNumber", spec = EqualIgnoreCase.class )
+        } ) Specification<Partner> spec ) {
+        return partnerService.getPartnerListFiltered(spec);
     }
+    // @formatter:on
 
     @ApiOperation( "Get partner by id" )
     @GetMapping( "/detail/{partnerId}" )

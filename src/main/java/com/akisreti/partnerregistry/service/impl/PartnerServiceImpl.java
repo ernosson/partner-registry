@@ -3,6 +3,7 @@ package com.akisreti.partnerregistry.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.akisreti.partnerregistry.domain.Partner;
@@ -26,7 +27,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public PartnerDto getPartner( Long partnerId ) {
+    public PartnerDto getPartner( final Long partnerId ) {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.convertValue(partnerRepository.findById(partnerId).get(), PartnerDto.class);
     }
@@ -35,6 +36,12 @@ public class PartnerServiceImpl implements PartnerService {
     public List<PartnerDto> getPartnerList() {
         ObjectMapper objectMapper = new ObjectMapper();
         return partnerRepository.findAll().stream().map(p -> objectMapper.convertValue(p, PartnerDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PartnerDto> getPartnerListFiltered( final Specification<Partner> spec ) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return partnerRepository.findAll(spec).stream().map(p -> objectMapper.convertValue(p, PartnerDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -49,7 +56,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public void deletePartner( Long partnerId ) {
+    public void deletePartner( final Long partnerId ) {
         partnerRepository.deleteById(partnerId);
     }
 }
