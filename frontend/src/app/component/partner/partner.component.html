@@ -1,0 +1,55 @@
+<app-header></app-header>
+<div class="container">
+
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="searchForm" class="pt-3" (ngSubmit)="filter()">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" formControlName="searchField" placeholder="Enter text..." aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-info" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Address</th>
+      <th>Functions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let partner of partners">
+      <td>{{partner.partnerId}}</td>
+      <td>{{partner.name}}</td>
+      <td>{{partner.type}}</td>
+      <td>
+      <span *ngFor="let address of partner.addresses">
+        <p>{{address.country | uppercase}}-{{address.zipCode}} {{address.city}}, {{address.streetName}} {{address.houseNumber}}</p>
+      </span>
+      </td>
+      <td>
+        <div class="text-left">
+          <button class="btn btn-success" disabled (click)="editPartner()" title="Edit">
+            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-danger ml-2" (click)="deletePartner(partner)" title="Delete">
+            <i class="bi bi-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-left">
+    <button class="btn btn-info" (click)="download()">Download All</button>
+    <button class="btn btn-success ml-2" disabled>Upload</button>
+  </div>
+</div>
+

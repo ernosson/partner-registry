@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 /**
@@ -56,14 +58,13 @@ public class PartnerController {
     @GetMapping( "/filter" )
     public List<PartnerDto> getPartnersFiltered(
         @Join( path = "addresses", alias = "a" )
-        @And( {
+        @Or( {
             @Spec( path = "name", spec = LikeIgnoreCase.class ),
-            @Spec( path = "type", spec = EqualIgnoreCase.class ),
-            @Spec( path = "a.country",     params = "country",     spec = EqualIgnoreCase.class ),
-            @Spec( path = "a.city",        params = "city",        spec = EqualIgnoreCase.class ),
-            @Spec( path = "a.zipCode",     params = "zipCode",     spec = Equal.class ),
+            @Spec( path = "a.country",     params = "country",     spec = LikeIgnoreCase.class ),
+            @Spec( path = "a.city",        params = "city",        spec = LikeIgnoreCase.class ),
+            @Spec( path = "a.zipCode",     params = "zipCode",     spec = LikeIgnoreCase.class ),
             @Spec( path = "a.streetName",  params = "streetName",  spec = LikeIgnoreCase.class ),
-            @Spec( path = "a.houseNumber", params = "houseNumber", spec = EqualIgnoreCase.class )
+            @Spec( path = "a.houseNumber", params = "houseNumber", spec = LikeIgnoreCase.class )
         } ) Specification<Partner> spec ) {
         return partnerService.getPartnerListFiltered(spec);
     }
@@ -94,11 +95,13 @@ public class PartnerController {
     }
 
     @ApiOperation( "Download all partner in CSV format" )
-    @PostMapping( value = "/download", produces = CSV_MIME_TYPE )
+    @GetMapping( value = "/download", produces = CSV_MIME_TYPE )
     public ResponseEntity<byte[]> downloadFile() throws IOException {
         byte[] content = documentService.downloadFile();
 
-        return ResponseEntity.ok().contentLength(content.length).header(HttpHeaders.CONTENT_TYPE, CSV_MIME_TYPE)
+        return ResponseEntity.ok()
+            .contentLength(content.length)
+            .header(HttpHeaders.CONTENT_TYPE, CSV_MIME_TYPE)
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "File.csv").body(content);
     }
 

@@ -20,8 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 /**
@@ -44,15 +43,12 @@ public class AddressController {
     @ApiOperation( "Get filtered address list" )
     @GetMapping( "/filter" )
     public List<AddressDto> getAddressesFiltered(
-        @Join( path = "partner", alias = "p" )
-        @And( {
-            @Spec( path = "p.name", spec = LikeIgnoreCase.class ),
-            @Spec( path = "p.type", spec = EqualIgnoreCase.class ),
-            @Spec( path = "country",     params = "country",     spec = EqualIgnoreCase.class ),
-            @Spec( path = "city",        params = "city",        spec = EqualIgnoreCase.class ),
-            @Spec( path = "zipCode",     params = "zipCode",     spec = Equal.class ),
+        @Or( {
+            @Spec( path = "country",     params = "country",     spec = LikeIgnoreCase.class ),
+            @Spec( path = "city",        params = "city",        spec = LikeIgnoreCase.class ),
+            @Spec( path = "zipCode",     params = "zipCode",     spec = LikeIgnoreCase.class ),
             @Spec( path = "streetName",  params = "streetName",  spec = LikeIgnoreCase.class ),
-            @Spec( path = "houseNumber", params = "houseNumber", spec = EqualIgnoreCase.class )
+            @Spec( path = "houseNumber", params = "houseNumber", spec = LikeIgnoreCase.class )
         } )
         Specification<Address> spec ) {
         return addressService.getAddressListFiltered(spec);

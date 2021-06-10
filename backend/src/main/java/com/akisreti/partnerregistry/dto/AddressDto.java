@@ -17,6 +17,5 @@ public class AddressDto {
     private String zipCode;
     private String streetName;
     private String houseNumber;
-    private PartnerDto partner;
 
 }

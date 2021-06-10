@@ -16,7 +16,7 @@ import net.kaczmarzyk.spring.data.jpa.web.SpecificationArgumentResolver;
  */
 @Configuration
 @EnableTransactionManagement
-public class JpaConfiguration implements WebMvcConfigurer {
+public class JpaConfig implements WebMvcConfigurer {
 
 
     @Override
