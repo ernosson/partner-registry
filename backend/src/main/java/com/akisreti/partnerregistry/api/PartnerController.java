@@ -46,11 +46,9 @@ public class PartnerController {
     private static final String CSV_MIME_TYPE = "text/csv";
 
     private PartnerService partnerService;
-    private DocumentService documentService;
 
-    public PartnerController( PartnerService partnerService, DocumentService documentService ) {
+    public PartnerController( PartnerService partnerService ) {
         this.partnerService = partnerService;
-        this.documentService = documentService;
     }
 
     // @formatter:off
@@ -94,10 +92,10 @@ public class PartnerController {
         partnerService.deletePartner(partnerId);
     }
 
-    @ApiOperation( "Download all partner in CSV format" )
+    @ApiOperation( "Download all partners in CSV format" )
     @GetMapping( value = "/download", produces = CSV_MIME_TYPE )
     public ResponseEntity<byte[]> downloadFile() throws IOException {
-        byte[] content = documentService.downloadFile();
+        byte[] content = partnerService.download();
 
         return ResponseEntity.ok()
             .contentLength(content.length)
@@ -111,7 +109,7 @@ public class PartnerController {
     public ResponseEntity uploadFile(
         @RequestParam( "file" )
             MultipartFile file ) throws IOException {
-        documentService.uploadFile(file);
+        partnerService.upload(file);
 
         return ResponseEntity.ok().build();
     }

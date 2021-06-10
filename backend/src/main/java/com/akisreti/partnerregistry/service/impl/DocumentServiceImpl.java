@@ -30,21 +30,18 @@ import com.akisreti.partnerregistry.service.PartnerService;
 @Service
 public class DocumentServiceImpl implements DocumentService {
 
-    private PartnerService partnerService;
-
-    public DocumentServiceImpl( PartnerService partnerService ) {
-        this.partnerService = partnerService;
+    public DocumentServiceImpl() {
     }
 
     @Override
-    public byte[] downloadFile() throws IOException {
+    public byte[] downloadFile( final List<String> header, List<List<String>> records ) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try ( CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(baos), CSVFormat.DEFAULT) ) {
 
-            csvPrinter.printRecord("partnerId", "name", "type");
+            csvPrinter.printRecord(header);
 
-            for ( PartnerDto p : partnerService.getPartnerList() ) {
-                csvPrinter.printRecord(p.getPartnerId().toString(), p.getName(), p.getType().name());
+            for ( List<String> record : records ) {
+                csvPrinter.printRecord(record);
             }
 
             csvPrinter.flush();
@@ -54,20 +51,16 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public void uploadFile( final MultipartFile file ) throws IOException {
+    public List<CSVRecord> uploadFile( final MultipartFile file ) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-        CSVParser csvParser = new CSVParser(new InputStreamReader(bais), CSVFormat.DEFAULT);
 
-        List<Partner> partners = new LinkedList<>();
-        for ( CSVRecord record : csvParser.getRecords() ) {
-            if ( record.getRecordNumber() > 1 ) {
-                partners.add(
-                    Partner.builder().partnerId(StringUtils.hasLength(record.get(0)) ? Long.parseLong(record.get(0)) : null).name(record.get(1))
-                        .type(PartnerType.valueOf(record.get(2))).build());
+        try ( CSVParser csvParser = new CSVParser(new InputStreamReader(bais), CSVFormat.DEFAULT) ) {
+            List<CSVRecord> records = csvParser.getRecords();
+            if ( !records.isEmpty() ) {
+                records.remove(0);
             }
+            return records;
         }
-
-        partnerService.savePartnerList(partners);
     }
 
 }

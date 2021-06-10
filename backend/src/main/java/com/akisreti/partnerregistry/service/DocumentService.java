@@ -1,7 +1,9 @@
 package com.akisreti.partnerregistry.service;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -11,7 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface DocumentService {
 
-    byte[] downloadFile() throws IOException;
+    byte[] downloadFile( List<String> header, List<List<String>> records ) throws IOException;
 
-    void uploadFile( MultipartFile file ) throws IOException;
+    List<CSVRecord> uploadFile( MultipartFile file ) throws IOException;
+
 }
