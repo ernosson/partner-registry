@@ -3,13 +3,14 @@ import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {catchError, map} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {Address} from "../model/address";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressService {
 
-  private baseUrl = 'http://localhost:8080/address/';
+  private baseUrl = `${environment.baseUrl}/address/`;
 
   constructor(private http: HttpClient) {
   }
@@ -31,7 +32,7 @@ export class AddressService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    const url = `${this.baseUrl}/delete/${address.addressId}`;
+    const url = `${this.baseUrl}delete/${address.addressId}`;
 
     return this.http.delete<Address>(url).pipe(catchError(this.handleError));
   }

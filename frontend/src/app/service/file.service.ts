@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {environment} from "../../environments/environment";
 
 
 @Injectable({
@@ -7,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class FileService {
 
-  private baseUrl = 'http://localhost:8080/'; // URL to web api
+  private baseUrl = `${environment.baseUrl}`;
 
   constructor(private http: HttpClient) {
   }
@@ -15,5 +16,5 @@ export class FileService {
   downloadFile(path: string): any {
     return this.http.get(`${this.baseUrl}/${path}/download`, {responseType: 'blob'});
   }
-  
+
 }

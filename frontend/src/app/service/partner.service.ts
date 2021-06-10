@@ -3,13 +3,14 @@ import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {Partner} from "../model/partner";
 import {throwError} from "rxjs";
 import {catchError, map} from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PartnerService {
 
-  private baseUrl = 'http://localhost:8080/partner/';
+  private baseUrl = `${environment.baseUrl}/partner/`;
 
   constructor(private http: HttpClient) {
   }
@@ -32,7 +33,7 @@ export class PartnerService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    const url = `${this.baseUrl}/delete/${partner.partnerId}`;
+    const url = `${this.baseUrl}delete/${partner.partnerId}`;
 
     return this.http.delete<Partner>(url).pipe(catchError(this.handleError));
   }
