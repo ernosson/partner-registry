@@ -2,6 +2,7 @@ package com.akisreti.partnerregistry.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,7 +39,7 @@ public class Partner {
     @Enumerated( EnumType.STRING )
     private PartnerType type;
     @JsonManagedReference
-    @OneToMany( mappedBy = "partner" )
+    @OneToMany( mappedBy = "partner", cascade = CascadeType.REMOVE, orphanRemoval = true )
     private List<Address> addresses;
 
 

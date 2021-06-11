@@ -101,6 +101,7 @@ public class AddressServiceImpl implements AddressService {
                 .city(record.get(3))
                 .streetName(record.get(4))
                 .houseNumber(record.get(5))
+                .partner(Partner.builder().partnerId(StringUtils.hasLength(record.get(6)) ? Long.parseLong(record.get(6)) : null).build())
                 .build());
         }
 

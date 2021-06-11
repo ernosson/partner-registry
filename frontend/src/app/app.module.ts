@@ -7,7 +7,7 @@ import { AddressComponent } from './component/address/address.component';
 import { PartnerComponent } from './component/partner/partner.component';
 import { HttpClientModule} from "@angular/common/http";
 import { HeaderComponent } from './component/header/header.component'
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [

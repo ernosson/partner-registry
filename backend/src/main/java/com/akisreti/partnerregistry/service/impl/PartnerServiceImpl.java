@@ -92,7 +92,6 @@ public class PartnerServiceImpl implements PartnerService {
         for ( CSVRecord record : records ) {
             partners.add(Partner.builder().partnerId(StringUtils.hasLength(record.get(0)) ? Long.parseLong(record.get(0)) : null).name(record.get(1))
                 .type(PartnerType.valueOf(record.get(2))).build());
-
         }
 
         savePartnerList(partners);

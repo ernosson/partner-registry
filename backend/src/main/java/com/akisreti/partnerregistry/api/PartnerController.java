@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,15 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.akisreti.partnerregistry.domain.Partner;
 import com.akisreti.partnerregistry.dto.PartnerDto;
-import com.akisreti.partnerregistry.service.DocumentService;
 import com.akisreti.partnerregistry.service.PartnerService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Or;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;

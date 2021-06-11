@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class PartnerService {
 
-  private baseUrl = `${environment.baseUrl}/partner/`;
+  private baseUrl = `${environment.baseUrl}partner/`;
 
   constructor(private http: HttpClient) {
   }

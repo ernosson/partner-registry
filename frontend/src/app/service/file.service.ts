@@ -14,7 +14,7 @@ export class FileService {
   }
 
   downloadFile(path: string): any {
-    return this.http.get(`${this.baseUrl}/${path}/download`, {responseType: 'blob'});
+    return this.http.get(`${this.baseUrl}${path}/download`, {responseType: 'blob'});
   }
 
 }
